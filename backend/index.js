@@ -4,11 +4,14 @@ const cors = require('cors');
 const User = require('./models/User');
 const ClaimHistory = require('./models/ClaimHistory');
 
+require('dotenv').config(); // Load env vars
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://md__qamar:qamar123db@123@cluster0.jkoyz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+// MongoDB connection using environment variable
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -41,6 +44,8 @@ app.get('/api/history', async (req, res) => {
   res.json(history);
 });
 
-app.listen(5000, () => {
-  console.log('Server started on port 5000');
+// Use environment port (for Render)
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
